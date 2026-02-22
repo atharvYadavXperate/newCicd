@@ -37,6 +37,10 @@ jobs:
     if: needs.detect-changes.outputs.main == 'true'
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     defaults:
       run:
         working-directory: main
@@ -48,13 +52,14 @@ jobs:
       TF_VAR_region: ${{ secrets.GCP_REGION }}
 
     steps:
-      - name: Authenticate to GCP
+      - uses: actions/checkout@v3
+
+      - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
         with:
-            workload_identity_provider: ${{secrets.GCP_PROVIDER}}
-            service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-      - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v3
 
       - name: Create Source Zip
@@ -72,6 +77,10 @@ jobs:
     if: needs.detect-changes.outputs.users == 'true'
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     defaults:
       run:
         working-directory: users
@@ -83,13 +92,14 @@ jobs:
       TF_VAR_region: ${{ secrets.GCP_REGION }}
 
     steps:
-      - name: Authenticate to GCP
+      - uses: actions/checkout@v3
+
+      - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
         with:
-            workload_identity_provider: ${{secrets.GCP_PROVIDER}}
-            service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-      - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v3
 
       - name: Create Source Zip
@@ -107,6 +117,10 @@ jobs:
     if: needs.detect-changes.outputs.auth == 'true'
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write
+      contents: read
+
     defaults:
       run:
         working-directory: auth
@@ -118,13 +132,14 @@ jobs:
       TF_VAR_region: ${{ secrets.GCP_REGION }}
 
     steps:
-      - name: Authenticate to GCP
+      - uses: actions/checkout@v3
+
+      - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
         with:
-            workload_identity_provider: ${{secrets.GCP_PROVIDER}}
-            service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-      - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v3
 
       - name: Create Source Zip
