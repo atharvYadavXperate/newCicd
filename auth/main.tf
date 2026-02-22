@@ -80,7 +80,7 @@ resource "google_cloudfunctions2_function" "auth" {
 
 resource "google_cloud_run_service_iam_member" "public_access" {
   location = var.region
-  service  = google_cloudfunctions2_function.users.name
+  service  = google_cloudfunctions2_function.auth.name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
