@@ -5,6 +5,6 @@ import (
 	"net/http"
 )
 
-func usersHTTP(w http.ResponseWriter, r *http.Request) {
+func UsersHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Users")
 }
