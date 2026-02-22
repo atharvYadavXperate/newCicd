@@ -101,6 +101,10 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - uses: hashicorp/setup-terraform@v3
+      - name: Debug Folder
+        run: |
+            pwd
+            ls -R
 
       - name: Create Source Zip
         run: |

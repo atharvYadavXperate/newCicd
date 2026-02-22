@@ -6,5 +6,5 @@ import (
 )
 
 func usersHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Users")
+	fmt.Fprintln(w, "Us ers")
 }
