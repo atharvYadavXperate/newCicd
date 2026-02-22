@@ -1,3 +1,3 @@
-module github.com/atharvYadavXperate/newCicd/users
+module users
 
 go 1.21
