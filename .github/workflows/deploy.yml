@@ -43,6 +43,9 @@ jobs:
                 working-directory: main
         steps:
           - uses: actions/checkout@v3
+          - name: Setup Terraform
+            uses: hashicorp/setup-terraform@v3
+
           - name: Create Source Zip
             run: |
                 cd function
@@ -69,7 +72,9 @@ jobs:
                 working-directory: users
         steps:
             - uses: actions/checkout@v3
-            
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+
             - name: Create Source Zip
               run: |
                 cd function
@@ -96,6 +101,9 @@ jobs:
                 working-directory: auth
         steps:
             - uses: actions/checkout@v3
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+
             - name: Create Source Zip
               run: |
                 cd function
