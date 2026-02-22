@@ -1,4 +1,9 @@
 terraform {
+  backend "gcs" {
+    bucket  = "terraform-state-603675804308"
+    prefix  = "cloud-functions/auth"
+  }
+
   required_providers {
     google = {
       source  = "hashicorp/google"

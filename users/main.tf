@@ -1,4 +1,9 @@
 terraform {
+  backend "gcs" {
+    bucket  = "terraform-state-603675804308"
+    prefix  = "cloud-functions/users"
+  }
+
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -10,6 +15,7 @@ terraform {
     }
   }
 }
+
 
 variable "project_id" {
   type = string
