@@ -1,0 +1,114 @@
+name: Multiple Go functions deploy
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - 'main/**'
+            - 'users/**'
+            - 'auth/**'
+
+jobs:
+
+    detect-changes:
+        runs-on: ubuntu-latest
+        outputs:
+            main: ${{ steps.filter.outputs.main }}
+            users: ${{ steps.filter.outputs.users }}
+            auth: ${{ steps.filter.outputs.auth }}
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            
+            - name: Detect Changed Folders
+              id: filter
+              uses: dorny/paths-filter@v3
+              with:
+                filters: |
+                    main:
+                        - 'main/**'
+                    users:
+                        - 'users/**'
+                    auth:
+                        - 'auth/**'
+
+    deploy-main:
+        needs: detect-changes
+        if: needs.detect-changes.outputs.main == 'true'
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: main
+        steps:
+          - uses: actions/checkout@v3
+          - name: Create Source Zip
+            run: |
+                cd function
+                zip -r ../source.zip .
+          - name: Terraform Init
+            run: terraform init
+          
+          - name: Terraform Plan
+            run: terraform plan
+        
+          - name: Terraform Apply
+            run: terraform apply -auto-approve \
+                    -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+                    -var="project_number=${{ secrets.GCP_PROJECT_NUMBER }}" \
+                    -var="service_account=${{ secrets.GCP_SERVICE_ACCOUNT }}" \
+                    -var="region=${{ secrets.GCP_REGION }}"
+    
+    deploy-users:
+        needs: detect-changes
+        if: needs.detect-changes.outputs.users == 'true'
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: users
+        steps:
+            - uses: actions/checkout@v3
+            
+            - name: Create Source Zip
+              run: |
+                cd function
+                zip -r ../source.zip .
+            - name: Terraform Init
+              run: terraform init
+          
+            - name: Terraform Plan
+              run: terraform plan
+        
+            - name: Terraform Apply
+              run: terraform apply -auto-approve \
+                    -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+                    -var="project_number=${{ secrets.GCP_PROJECT_NUMBER }}" \
+                    -var="service_account=${{ secrets.GCP_SERVICE_ACCOUNT }}" \
+                    -var="region=${{ secrets.GCP_REGION }}"
+    
+    deploy-auth:
+        needs: detect-changes
+        if: needs.detect-changes.outputs.auth == 'true'
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: auth
+        steps:
+            - uses: actions/checkout@v3
+            - name: Create Source Zip
+              run: |
+                cd function
+                zip -r ../source.zip .
+            - name: Terraform Init
+              run: terraform init
+          
+            - name: Terraform Plan
+              run: terraform plan
+        
+            - name: Terraform Apply
+              run: terraform apply -auto-approve \
+                    -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+                    -var="project_number=${{ secrets.GCP_PROJECT_NUMBER }}" \
+                    -var="service_account=${{ secrets.GCP_SERVICE_ACCOUNT }}" \
+                    -var="region=${{ secrets.GCP_REGION }}"
