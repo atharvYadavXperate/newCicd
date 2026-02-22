@@ -1,4 +1,4 @@
-package userfunction
+package function
 
 import (
 	"fmt"
@@ -6,5 +6,5 @@ import (
 )
 
 func usersHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Us ers")
+	fmt.Fprintln(w, "Users")
 }
