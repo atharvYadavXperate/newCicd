@@ -7,5 +7,5 @@ import (
 
 func authHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprintln(w, "Auth")
+	fmt.Fprintln(w, "auth")
 }
