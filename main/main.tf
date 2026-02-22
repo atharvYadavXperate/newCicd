@@ -79,13 +79,12 @@ resource "google_cloudfunctions2_function" "main" {
   }
 }
 
-resource "google_cloudfunctions2_function_iam_member" "public_access" {
-  location       = var.region
-  service        = google_cloudfunctions2_function.main.name
-  role           = "roles/run.invoker"
-  member         = "allUsers"
+resource "google_cloud_run_service_iam_member" "public_access" {
+  location = var.region
+  service  = google_cloudfunctions2_function.main.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
 }
-
 output "function_url" {
   value = google_cloudfunctions2_function.main.service_config[0].uri
 }
