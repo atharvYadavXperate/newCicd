@@ -59,8 +59,8 @@ resource "google_cloudfunctions2_function" "auth" {
 
   build_config {
     runtime     = "go121"
-    entry_point = "authHTTP"
-
+    entry_point = "AuthHTTP"
+    service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
       storage_source {
         bucket = google_storage_bucket.source_bucket.name
@@ -78,12 +78,11 @@ resource "google_cloudfunctions2_function" "auth" {
   }
 }
 
-resource "google_cloudfunctions2_function_iam_member" "public_access" {
-  project        = var.project_id
-  location       = var.region
-  cloud_function = google_cloudfunctions2_function.auth.name
-  role           = "roles/run.invoker"
-  member         = "allUsers"
+resource "google_cloud_run_service_iam_member" "public_access" {
+  location = var.region
+  service  = google_cloudfunctions2_function.users.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
 }
 
 output "function_url" {
