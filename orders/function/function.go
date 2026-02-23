@@ -7,5 +7,5 @@ import (
 
 func OrdersHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprintln(w, "Orders")
+	fmt.Fprintln(w, "Order s")
 }
