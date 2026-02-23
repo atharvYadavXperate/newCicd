@@ -20,6 +20,7 @@ func (u *UserSchema) ToJSON() ([]byte, error) {
 }
 
 func (u *UserSchema) ToJSONString() (string, error) {
+
 	str, err := domain.ToJSONString(*u)
 	return str, err
 }
