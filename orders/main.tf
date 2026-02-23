@@ -37,6 +37,10 @@ provider "google"{
     region  = var.region
 }
 
+resource "random_id" "bucket_suffix" {
+    byte_length = 4
+}
+
 resource "google_storage_bucket" "source_bucket"{
     name = "${var.project_id}-function-${random_id.bucket_suffix.hex}"
     location = var.region
@@ -51,28 +55,28 @@ resource "google_storage_bucket_object" "source_archive" {
 }
 
 resource "google_cloudfunctions2_function" "orders" {
-    name = "orders"
-    location = var.region
+  name     = "orders"
+  location = var.region
 
-    build_config {
-        runtime = "go121"
-        entry_point = "OrdersHTTP"
-        service_account =  "projects/${var.project_id}/serviceAccounts/${var.service_account}"
-        source {
-            storage_source {
-                bucket = google_storage_bucket.source_bucket.name
-                object = google_storage_bucket_object.source_archive.name
-            }
-        }
+  build_config {
+    runtime     = "go121"
+    entry_point = "OrdersHTTP"
 
-        service_config {
-            max_instance_count = 1
-            available_memory = "256M"
-            timeout_seconds = 60
-            service_account_email = var.service_account
-            ingress_settings = "ALLOW_ALL"
-        }
+    source {
+      storage_source {
+        bucket = google_storage_bucket.source_bucket.name
+        object = google_storage_bucket_object.source_archive.name
+      }
     }
+  }
+
+  service_config {
+    max_instance_count    = 1
+    available_memory      = "256M"
+    timeout_seconds       = 60
+    service_account_email = var.service_account
+    ingress_settings      = "ALLOW_ALL"
+  }
 }
 
 resource "google_cloud_run_service_iam_member" "public_access"{
