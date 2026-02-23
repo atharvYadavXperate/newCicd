@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     bucket  = "terraform-state-603675804308"
-    prefix  = "cloud-functions/RegisterHTTP"
+    prefix  = "cloud-functions/Register"
   }
 
   required_providers {
@@ -53,13 +53,13 @@ resource "google_storage_bucket_object" "source_archive" {
   source = "source.zip"
 }
 
-resource "google_cloudfunctions2_function" "RegisterHTTP" {
-  name     = "RegisterHTTP"
+resource "google_cloudfunctions2_function" "Register" {
+  name     = "Register"
   location = var.region
 
   build_config {
     runtime     = "go121"
-    entry_point = "RegisterHTTP"
+    entry_point = "Register"
     service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
       storage_source {
@@ -80,11 +80,11 @@ resource "google_cloudfunctions2_function" "RegisterHTTP" {
 
 resource "google_cloud_run_service_iam_member" "public_access" {
   location = var.region
-  service  = google_cloudfunctions2_function.RegisterHTTP.name
+  service  = google_cloudfunctions2_function.Register.name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
 
 output "function_url" {
-  value = google_cloudfunctions2_function.RegisterHTTP.service_config[0].uri
+  value = google_cloudfunctions2_function.Register.service_config[0].uri
 }

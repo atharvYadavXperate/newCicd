@@ -6,7 +6,7 @@ import (
 	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
 )
 
-func RegisterHTTP(w http.ResponseWriter, r *http.Request) {
+func Register(w http.ResponseWriter, r *http.Request) {
 	var user = users.UserSchema{}
 	user.ParseData(r.Body)
 	w.Header().Set("Content-type", "application/json")
