@@ -7,7 +7,7 @@ on:
     paths:
       - 'main/**'
       - 'users/**'
-      - 'auth/**'
+      - 'register/**'
       - 'orders/**'
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     outputs:
       main: ${{ steps.filter.outputs.main }}
       users: ${{ steps.filter.outputs.users }}
-      auth: ${{ steps.filter.outputs.auth }}
+      register: ${{ steps.filter.outputs.register }}
       orders: ${{steps.filter.outputs.orders}}
 
     steps:
@@ -31,8 +31,8 @@ jobs:
               - 'main/**'
             users:
               - 'users/**'
-            auth:
-              - 'auth/**'
+            register:
+              - 'register/**'
             orders:
               - 'orders/**'
 
@@ -120,9 +120,9 @@ jobs:
       - run: terraform apply -auto-approve -input=false
 
 
-  deploy-auth:
+  deploy-register:
     needs: detect-changes
-    if: needs.detect-changes.outputs.auth == 'true'
+    if: needs.detect-changes.outputs.register == 'true'
     runs-on: ubuntu-latest
 
     permissions:
@@ -131,7 +131,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: auth
+        working-directory: register
 
     env:
       TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
