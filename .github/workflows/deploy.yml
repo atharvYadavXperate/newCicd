@@ -193,7 +193,7 @@ jobs:
       - name: Create Source Zip
         run: |
           cd function
-          zip -r ../source.zip
+          zip -r ../source.zip .
 
       - run: terraform init
       - run: terraform plan -input=false
