@@ -83,6 +83,7 @@ resource "google_cloudfunctions2_function_iam_member" "public_access" {
   cloud_function = google_cloudfunctions2_function.Register.name
   role           = "roles/cloudfunctions.invoker"
   member         = "allUsers"
+  depends_on = [google_cloudfunctions2_function.Register]
 }
 
 output "function_url" {
