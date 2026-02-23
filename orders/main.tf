@@ -1,19 +1,19 @@
-terraform{
-    backend "gcs"{
-        backend = "terraform-state-603675804308"
-        prefix  = "cloud-function/orders"
-    }
+terraform {
+  backend "gcs" {
+    bucket  = "terraform-state-603675804308"
+    prefix  = "cloud-functions/orders"
+  }
 
-    required_providers {
-        google = {
-            source  = "hashicorp/google"
-            version = "~> 5.0"
-        }
-        random = {
-            source  = "hashicorp/random"
-            version = "~> 3.0"
-        }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
+  }
 }
 
 variable "project_id"{
