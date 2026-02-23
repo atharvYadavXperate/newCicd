@@ -5,9 +5,9 @@ import (
 )
 
 type UserSchema struct {
-	username  string
-	password  string
-	role      role
-	verified  bool
-	createdAt time.Time
+	UserName  string
+	Password  string
+	Role      role
+	Verified  bool
+	CreatedAt time.Time
 }
