@@ -78,14 +78,14 @@ resource "google_cloudfunctions2_function" "Register" {
   }
 }
 
-resource "google_cloudfunctions2_function_iam_member" "public_access" {
+resource "google_cloudfunctions2_function_iam_binding" "public_access" {
   project        = var.project_id
   cloud_function = google_cloudfunctions2_function.Register.name
   role           = "roles/cloudfunctions.invoker"
-  member         = "allUsers"
+  members        = ["allUsers"]
+
   depends_on = [google_cloudfunctions2_function.Register]
 }
-
 output "function_url" {
   value = google_cloudfunctions2_function.Register.service_config[0].uri
 }
