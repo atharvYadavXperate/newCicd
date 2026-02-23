@@ -2,6 +2,7 @@ package users
 
 import (
 	"io"
+	"time"
 
 	"github.com/atharvYadavXperate/newCicd/kapad-app/domain"
 )
@@ -20,7 +21,13 @@ func (u *UserSchema) ToJSON() ([]byte, error) {
 }
 
 func (u *UserSchema) ToJSONString() (string, error) {
+	return domain.ToJSONString(*u)
+}
 
-	str, err := domain.ToJSONString(*u)
-	return str, err
+func (u *UserSchema) SetDefaults() {
+	if u.Role == "" {
+		u.Role = "user" // default role
+	}
+	u.Verified = false
+	u.CreatedAt = time.Now()
 }
