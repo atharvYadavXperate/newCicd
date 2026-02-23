@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     bucket  = "terraform-state-603675804308"
-    prefix  = "cloud-functions/Register"
+    prefix  = "cloud-functions/register"
   }
 
   required_providers {
@@ -53,8 +53,8 @@ resource "google_storage_bucket_object" "source_archive" {
   source = "source.zip"
 }
 
-resource "google_cloudfunctions2_function" "Register" {
-  name     = "Register"
+resource "google_cloudfunctions2_function" "register" {
+  name     = "register"
   location = var.region
 
   build_config {
@@ -80,13 +80,11 @@ resource "google_cloudfunctions2_function" "Register" {
 
 resource "google_cloud_run_service_iam_member" "public_access" {
   location = var.region
-  service  = google_cloudfunctions2_function.Register.name
+  service  = google_cloudfunctions2_function.register.name
   role     = "roles/run.invoker"
   member   = "allUsers"
-
-  depends_on = [google_cloudfunctions2_function.Register]
 }
 
 output "function_url" {
-  value = google_cloudfunctions2_function.Register.service_config[0].uri
+  value = google_cloudfunctions2_function.register.service_config[0].uri
 }
