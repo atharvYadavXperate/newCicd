@@ -9,17 +9,6 @@ on:
       tf_vars:
         required: false
         type: string
-    secrets:
-      GCP_PROJECT_ID:
-        required: true
-      GCP_PROJECT_NUMBER:
-        required: true
-      GCP_REGION:
-        required: true
-      GCP_SERVICE_ACCOUNT:
-        required: true
-      GCP_PROVIDER:
-        required: true
 
 jobs: 
   deploy:

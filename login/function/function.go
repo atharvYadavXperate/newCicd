@@ -11,5 +11,5 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, customerror.ErrMethodNotAllows.Error(), http.StatusBadRequest)
 		return
 	}
-	w.Write([]byte(""))
+	w.Write([]byte("Hello World"))
 }

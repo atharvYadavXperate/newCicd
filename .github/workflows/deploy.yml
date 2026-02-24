@@ -208,9 +208,4 @@ jobs:
     uses: ./.github/workflows/deploy-go-function.yml
     with:
       name: login
-    secrets:
-      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      GCP_PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}
-      GCP_REGION: ${{ secrets.GCP_REGION }}
-      GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      GCP_PROVIDER: ${{ secrets.GCP_PROVIDER }}
+    secrets: inherit
