@@ -6,9 +6,6 @@ on:
       name:
         required: true
         type: string
-      tf_vars:
-        required: false
-        type: string
     secrets:
       GCP_PROJECT_ID:
         required: true
@@ -18,10 +15,16 @@ on:
         required: true
       GCP_SERVICE_ACCOUNT:
         required: true
+      GCP_PROVIDER: 
+        required: true
 
 jobs: 
   deploy:
     runs-on: ubuntu-latest
+    permissions: # Explicitly required for OIDC inside the reusable workflow
+      id-token: write
+      contents: read
+    
     env:
       TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
       TF_VAR_project_number: ${{ secrets.GCP_PROJECT_NUMBER }}
@@ -30,17 +33,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      
       - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          
       - uses: hashicorp/setup-terraform@v3
 
       - name: Create Source Zip
         run: |
-          cd function
+          cd ${{ inputs.name }}/function
           zip -r ../source.zip .
-      - run: terraform init
-      - run: terraform plan -input=false
-      - run: terraform apply -auto-approve -input=false
+          
+      - name: Terraform Ops
+        working-directory: ${{ inputs.name }} 
+        run: |
+          terraform init
+          terraform plan -input=false
+          terraform apply -auto-approve -input=false
