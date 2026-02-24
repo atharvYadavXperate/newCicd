@@ -8,6 +8,19 @@ import (
 	customerror "github.com/atharvYadavXperate/newCicd/kapad-app/domain/errors"
 )
 
+func (db *Database) Get(ctx context.Context, collection, docID string, result interface{}) error {
+	if db.Client == nil {
+		return customerror.ErrDatabaseConnectionFailed
+	}
+
+	docSnap, err := db.Client.Collection(collection).Doc(docID).Get(ctx)
+	if err != nil {
+		return err
+	}
+
+	return docSnap.DataTo(result)
+}
+
 func (db *Database) Create(ctx context.Context, collection string, data interface{}) (*firestore.DocumentRef, *firestore.WriteResult, error) {
 	if db.Client == nil {
 		return nil, nil, customerror.ErrDatabaseConnectionFailed
