@@ -10,7 +10,7 @@ on:
       - 'register/**'
       - 'orders/**'
       - 'login/**'
-
+  workflow_dispatch:
 jobs:
 
   detect-changes:

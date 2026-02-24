@@ -37,17 +37,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
       - uses: hashicorp/setup-terraform@v3
 
       - name: Create Source Zip
+        # Added ${{ inputs.name }} here
         run: |
-          cd function
+          cd ${{ inputs.name }}/function
           zip -r ../source.zip .
-      - run: terraform init
-      - run: terraform plan -input=false
-      - run: terraform apply -auto-approve -input=false
+
+      - name: Terraform Init/Plan/Apply
+        # Set the working directory for the terraform commands
+        working-directory: ${{ inputs.name }}
+        run: |
+          terraform init
+          terraform plan -input=false
+          terraform apply -auto-approve -input=false
