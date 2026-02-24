@@ -9,10 +9,25 @@ on:
       tf_vars:
         required: false
         type: string
+    secrets:
+      GCP_PROJECT_ID:
+        required: true
+      GCP_PROJECT_NUMBER:
+        required: true
+      GCP_REGION:
+        required: true
+      GCP_SERVICE_ACCOUNT:
+        required: true
 
 jobs: 
   deploy:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+      TF_VAR_project_number: ${{ secrets.GCP_PROJECT_NUMBER }}
+      TF_VAR_region: ${{ secrets.GCP_REGION }}
+      TF_VAR_service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
     steps:
       - uses: actions/checkout@v3
       - name: Authenticate to GCP (OIDC)
@@ -28,4 +43,4 @@ jobs:
           zip -r ../source.zip .
       - run: terraform init
       - run: terraform plan -input=false
-      - run: terraform apply -auto-approve -input=false ${{ inputs.tf_vars }}
+      - run: terraform apply -auto-approve -input=false
