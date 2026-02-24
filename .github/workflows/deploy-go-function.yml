@@ -1,0 +1,31 @@
+name: "Deploy function"
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      tf_vars:
+        required: false
+        type: string
+
+jobs: 
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Authenticate to GCP (OIDC)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Create Source Zip
+        run: |
+          cd function
+          zip -r ../source.zip .
+      - run: terraform init
+      - run: terraform plan -input=false
+      - run: terraform apply -auto-approve -input=false ${{ inputs.tf_vars }}

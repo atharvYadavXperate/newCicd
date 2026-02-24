@@ -9,6 +9,7 @@ on:
       - 'users/**'
       - 'register/**'
       - 'orders/**'
+      - 'login/**'
 
 jobs:
 
@@ -19,6 +20,7 @@ jobs:
       users: ${{ steps.filter.outputs.users }}
       register: ${{ steps.filter.outputs.register }}
       orders: ${{steps.filter.outputs.orders}}
+      login: ${{steps.filter.outputs.login}}
 
     steps:
       - uses: actions/checkout@v3
@@ -35,6 +37,8 @@ jobs:
               - 'register/**'
             orders:
               - 'orders/**'
+            login:
+              - 'login/**'
 
   deploy-main:
     needs: detect-changes
@@ -74,7 +78,6 @@ jobs:
       - run: terraform init
       - run: terraform plan -input=false
       - run: terraform apply -auto-approve -input=false
-
 
   deploy-users:
     needs: detect-changes
@@ -159,7 +162,6 @@ jobs:
       - run: terraform plan -input=false
       - run: terraform apply -auto-approve -input=false
 
-
   deploy-orders:
     needs: detect-changes
     if: needs.detect-changes.outputs.orders == 'true'
@@ -198,3 +200,19 @@ jobs:
       - run: terraform init
       - run: terraform plan -input=false
       - run: terraform apply -auto-approve -input=false
+
+
+  deploy-login:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.login == 'true'
+    uses: ./.github/workflows/deploy-go-function.yml
+    with:
+      name: login
+      tf_vars: >-
+        -var="project_id=$PROJECT_ID"
+        -var="region=$REGION"
+        -var="project_number=$PROJECT_NUMBER"
+    secrets:
+      PROJECT_ID: ${{ secrets.PROJECT_ID}}
+      REGION: ${{ secrets.REGION }}
+      PROJECT_NUMBER: ${{ secrets.GCP_PROJECT_NUMBER }}

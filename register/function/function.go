@@ -2,7 +2,6 @@ package authfunction
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
 	customerror "github.com/atharvYadavXperate/newCicd/kapad-app/domain/errors"
@@ -25,8 +24,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user.Verified = false
-	user.CreatedAt = time.Now()
 	w.Header().Set("Content-Type", "application/json")
 
 	jsonData, err := user.ToJSON()
