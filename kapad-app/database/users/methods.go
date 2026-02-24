@@ -26,9 +26,6 @@ func (u *UserSchema) ToJSONString() (string, error) {
 }
 
 func (u *UserSchema) SetDefaults() {
-	if u.Role == "" {
-		u.Role = "user" // default role
-	}
 	u.Verified = false
 	u.CreatedAt = time.Now()
 }
