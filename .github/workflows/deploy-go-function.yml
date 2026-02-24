@@ -24,6 +24,11 @@ on:
 jobs: 
   deploy:
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+    
     env:
       TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
       TF_VAR_project_number: ${{ secrets.GCP_PROJECT_NUMBER }}
