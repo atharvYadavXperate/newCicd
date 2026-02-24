@@ -20,7 +20,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user.IsAllRequiredFields() {
+	if !user.IsAllRequiredFields() {
 		http.Error(w, "All fields are required", http.StatusBadRequest)
 		return
 	}
