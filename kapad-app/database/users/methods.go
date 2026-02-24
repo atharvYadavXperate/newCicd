@@ -40,7 +40,7 @@ func (u *UserSchema) TrimSpacesOfUsernamePassword() {
 
 func (u *UserSchema) IsAllRequiredFields() bool {
 	u.TrimSpacesOfUsernamePassword()
-	if u.UserName != "" || u.Password != "" || !u.Role.IsValid() {
+	if u.UserName == "" || u.Password == "" || !u.Role.IsValid() {
 		return false
 	}
 	return true
