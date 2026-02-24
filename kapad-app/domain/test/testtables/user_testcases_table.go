@@ -1,7 +1,7 @@
 package testtables
 
 import (
-	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
+	"github.com/atharvYadavXperate/newCicd/kapad-app/schema/users"
 )
 
 type AllFieldsTestCase struct {

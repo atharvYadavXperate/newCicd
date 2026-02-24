@@ -3,8 +3,8 @@ package kapadtest
 import (
 	"testing"
 
-	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
 	"github.com/atharvYadavXperate/newCicd/kapad-app/domain/test/testtables"
+	"github.com/atharvYadavXperate/newCicd/kapad-app/schema/users"
 )
 
 func TestUserSchema_AllFieldsRequired(t *testing.T) {
