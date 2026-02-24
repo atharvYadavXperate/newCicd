@@ -3,10 +3,11 @@ package kapadtest
 import (
 	"testing"
 
+	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
 	"github.com/atharvYadavXperate/newCicd/kapad-app/domain/test/testtables"
 )
 
-func TestAllFieldsRequired(t *testing.T) {
+func TestUserSchema_AllFieldsRequired(t *testing.T) {
 	cases := testtables.IsAllRequiredFieldsTable()
 	for _, c := range cases {
 		result := c.Input.IsAllRequiredFields()
@@ -16,7 +17,7 @@ func TestAllFieldsRequired(t *testing.T) {
 	}
 }
 
-func TestTrimSpacesOfUsernamePassword(t *testing.T) {
+func TestUserSchema_TrimSpacesOfUsernamePassword(t *testing.T) {
 	cases := testtables.TrimSpacesOfUserNamePasswordTable()
 	for _, c := range cases {
 		c.Input.TrimSpacesOfUsernamePassword()
@@ -29,7 +30,7 @@ func TestTrimSpacesOfUsernamePassword(t *testing.T) {
 	}
 }
 
-func TestToJSONString(t *testing.T) {
+func TestUserSchema_ToJSONString(t *testing.T) {
 	cases := testtables.ToJSONStringTable()
 	for _, c := range cases {
 		_, err := c.Input.ToJSONString()
@@ -41,6 +42,28 @@ func TestToJSONString(t *testing.T) {
 		}
 		if err != nil {
 			t.Errorf("unexpected error %v", err)
+		}
+	}
+}
+
+func TestUserSchema_ValidateUsernamePassword(t *testing.T) {
+	// Username test cases
+	for _, c := range testtables.ValidateUsernameTable() {
+		u := users.UserSchema{UserName: c.Input, Password: "validPass1", Role: users.User}
+		err := u.Validate()
+		got := err == nil
+		if got != c.Expected {
+			t.Errorf("Test %q: Validate username %q expected valid=%v, got %v", c.Input, c.Input, c.Expected, got)
+		}
+	}
+
+	// Password test cases
+	for _, c := range testtables.ValidatePasswordTable() {
+		u := users.UserSchema{UserName: "validUser", Password: c.Input, Role: users.User}
+		err := u.Validate()
+		got := err == nil
+		if got != c.Expected {
+			t.Errorf("Test %q: Validate password %q expected valid=%v, got %v", c.Input, c.Input, c.Expected, got)
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package testtables
 
-import "github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
+import (
+	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
+)
 
 type AllFieldsTestCase struct {
 	Name        string
@@ -257,5 +259,35 @@ func ToJSONStringTable() []ToJSONStringCase {
 			},
 			ExpectError: false,
 		},
+	}
+}
+
+type UsernameTestCase struct {
+	Input    string
+	Expected bool
+}
+
+func ValidateUsernameTable() []UsernameTestCase {
+	return []UsernameTestCase{
+		{"john", true},
+		{"  alice  ", true}, // spaces should be trimmed
+		{"ab", false},       // too short
+		{"", false},         // empty
+	}
+}
+
+type PasswordTestCase struct {
+	Input    string
+	Expected bool
+}
+
+func ValidatePasswordTable() []PasswordTestCase {
+	return []PasswordTestCase{
+		{"password1", true},
+		{"pass1", false},
+		{"password", false},
+		{"12345678", false},    // no letter
+		{"  p4ssword  ", true}, // spaces should be trimmed
+		{"", false},            // empty
 	}
 }
