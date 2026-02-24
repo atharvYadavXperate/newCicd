@@ -9,8 +9,6 @@ on:
       tf_vars:
         required: false
         type: string
-    # We do not define a secrets: block here when using 'secrets: inherit' 
-    # as it can cause validation conflicts.
 
 jobs: 
   deploy:
@@ -39,7 +37,6 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Create Source Zip
-        # This assumes path: repo_root/{name}/function
         run: |
           cd ${{ inputs.name }}/function
           zip -r ../source.zip .
