@@ -7,7 +7,7 @@ import (
 type UserSchema struct {
 	UserName  string    `json:"username"`
 	Password  string    `json:"password"`
-	Role      string    `json:"role"`
+	Role      role      `json:"role"`
 	Verified  bool      `json:"verified"`
 	CreatedAt time.Time `json:"createdAt"`
 }

@@ -2,6 +2,7 @@ package users
 
 import (
 	"io"
+	"strings"
 	"time"
 
 	"github.com/atharvYadavXperate/newCicd/kapad-app/domain"
@@ -30,4 +31,17 @@ func (u *UserSchema) SetDefaults() {
 	}
 	u.Verified = false
 	u.CreatedAt = time.Now()
+}
+
+func (u *UserSchema) TrimSpacesOfUsernamePassword() {
+	u.UserName = strings.TrimSpace(u.UserName)
+	u.Password = strings.TrimSpace(u.Password)
+}
+
+func (u *UserSchema) IsAllRequiredFields() bool {
+	u.TrimSpacesOfUsernamePassword()
+	if u.UserName != "" || u.Password != "" || !u.Role.IsValid() {
+		return false
+	}
+	return true
 }
