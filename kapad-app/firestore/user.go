@@ -13,7 +13,7 @@ var (
 
 func (db *Database) CreateUser(user users.UserSchema) (users.UserSchema, error) {
 	user.HashPassword()
-	_, _, err := db.Create(context.Background(), userCollection, user)
+	_, _, err := db.CreateWithCustomId(context.Background(), userCollection, user.UserName, user)
 	if err != nil {
 		return users.UserSchema{}, customerror.ErrUserCreationFailed
 	}
