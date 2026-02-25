@@ -7,7 +7,7 @@ import (
 	custiomeerror "github.com/atharvYadavXperate/newCicd/kapad-app/domain/errors"
 )
 
-func (db *Database) NewDatabase(ctx context.Context, projectId string) (*Database, error) {
+func NewDatabase(ctx context.Context, projectId string) (*Database, error) {
 	once.Do(func() {
 		c, err := firestore.NewClient(ctx, projectId)
 		if err != nil {
