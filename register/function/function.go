@@ -23,8 +23,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !user.IsAllRequiredFields() {
-		http.Error(w, "All fields are required", http.StatusBadRequest)
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "All fields are required", "")
 		return
+	}
+
+	if err := user.Validate(); err != nil {
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "failed to create account", err.Error())
 	}
 
 	_, err := app.Database.CreateUser(user)

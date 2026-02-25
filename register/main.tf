@@ -79,6 +79,10 @@ resource "google_cloudfunctions2_function" "register" {
       PROJECT_ID = var.project_id
     }
   }
+  timeouts {
+    create = "15m"
+    update = "15m"
+  }
 }
 
 resource "google_cloud_run_service_iam_member" "public_access" {
