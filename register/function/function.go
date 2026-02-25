@@ -3,6 +3,7 @@ package authfunction
 import (
 	"log"
 	"net/http"
+	"time"
 
 	customerror "github.com/atharvYadavXperate/kapad-app/domain/errors"
 	"github.com/atharvYadavXperate/kapad-app/domain/helpers"
@@ -15,7 +16,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, customerror.ErrMethodNotAllows.Error(), http.StatusBadRequest)
 		return
 	}
+	log.Printf(time.Now().String())
 	app := applayer.Init()
+	log.Printf(time.Now().String())
 	var user users.UserSchema
 
 	if err := user.ParseData(r.Body); err != nil {
@@ -40,5 +43,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "username already exits", err.Error())
 		return
 	}
+	log.Printf(time.Now().String())
 	helpers.ResponseJsonWriter(w, user, http.StatusCreated, "User created successfully", "")
 }
