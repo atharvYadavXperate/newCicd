@@ -15,7 +15,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	app := applayer.Init()
-
 	var user users.UserSchema
 
 	if err := user.ParseData(r.Body); err != nil {
