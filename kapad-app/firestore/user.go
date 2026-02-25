@@ -19,7 +19,3 @@ func (db *Database) CreateUser(user users.UserSchema) (users.UserSchema, error) 
 	}
 	return user, nil
 }
-
-func (db *Database) GetUser(username string) (users.UserSchema, error) {
-
-}

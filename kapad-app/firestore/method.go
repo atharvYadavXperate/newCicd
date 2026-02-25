@@ -6,6 +6,7 @@ import (
 
 	"cloud.google.com/go/firestore"
 	customerror "github.com/atharvYadavXperate/newCicd/kapad-app/domain/errors"
+	"github.com/atharvYadavXperate/newCicd/kapad-app/domain/helpers"
 )
 
 func (db *Database) GetById(ctx context.Context, collection, docID string, result interface{}) error {
@@ -35,6 +36,16 @@ func (db *Database) Create(ctx context.Context, collection string, data interfac
 		return nil, nil, customerror.ErrDatabaseConnectionFailed
 	}
 	return db.Client.Collection(collection).Add(ctx, data)
+}
+
+func (db *Database) CreateWithCustomId(ctx context.Context, collection string, docID string, data interface{}) (*firestore.DocumentRef, *firestore.WriteResult, error) {
+	if db.Client == nil {
+		return nil, nil, customerror.ErrDatabaseConnectionFailed
+	}
+	docID = helpers.HashValueDeterministic(docID)
+	docRef := db.Client.Collection(collection).Doc(docID)
+	writerResult, err := docRef.Create(ctx, data)
+	return docRef, writerResult, err
 }
 
 func (db *Database) Update(ctx context.Context, collection string, docId string, fieldsToUpdate map[string]interface{}) (*firestore.WriteResult, error) {
