@@ -1,5 +1,5 @@
 package app
 
-type Application struct {
+type App struct {
 	ProjectId string
 }

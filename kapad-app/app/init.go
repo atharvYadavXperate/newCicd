@@ -2,10 +2,10 @@ package app
 
 import "os"
 
-func (a *Application) Init() {
+func (a *App) Init() {
 	a.ProjectId = os.Getenv("PROJECT_ID")
 }
 
-func (a *Application) GetProjectId() string {
+func (a *App) GetProjectId() string {
 	return a.ProjectId
 }
