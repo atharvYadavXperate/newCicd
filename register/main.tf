@@ -41,7 +41,7 @@ resource "random_id" "bucket_suffix" {
 }
 
 resource "google_storage_bucket" "source_bucket" {
-  name                        = "${var.project_id}-function-${random_id.bucket_suffix.hex}"
+  name                        = "${var.project_id}-functions-source"
   location                    = var.region
   uniform_bucket_level_access = true
   force_destroy               = true
@@ -58,7 +58,7 @@ resource "google_cloudfunctions2_function" "register" {
   location = var.region
 
   build_config {
-    runtime     = "go121"
+    runtime     = "go122"
     entry_point = "Register"
     service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account}"
     source {
