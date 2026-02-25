@@ -3,8 +3,10 @@ package authfunction
 import (
 	"net/http"
 
-	"github.com/atharvYadavXperate/newCicd/kapad-app/database/users"
-	customerror "github.com/atharvYadavXperate/newCicd/kapad-app/domain/errors"
+	customerror "github.com/atharvYadavXperate/kapad-app/domain/errors"
+	"github.com/atharvYadavXperate/kapad-app/schema/users"
+	"github.com/atharvYadavXperate/newCicd/kapad-app/domain/helpers"
+	"github.com/atharvYadavXperate/newCicd/register/applayer"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +14,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, customerror.ErrMethodNotAllows.Error(), http.StatusBadRequest)
 		return
 	}
+	app := applayer.Init()
+
 	var user users.UserSchema
 
 	if err := user.ParseData(r.Body); err != nil {
@@ -24,13 +28,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-
-	jsonData, err := user.ToJSON()
+	_, err := app.Database.CreateUser(user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "", err)
 		return
 	}
-
-	w.Write(jsonData)
+	helpers.ResponseJsonWriter(w, user, http.StatusCreated, "User created successfully", "")
 }
