@@ -2,6 +2,8 @@ module github.com/atharvYadavXperate/newCicd/register
 
 go 1.25.5
 
+require github.com/atharvYadavXperate/kapad-app v0.0.0-20260225073309-792a39079899
+
 require (
 	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.17.0 // indirect
@@ -9,8 +11,6 @@ require (
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/firestore v1.21.0 // indirect
 	cloud.google.com/go/longrunning v0.7.0 // indirect
-	github.com/atharvYadavXperate/kapad-app v0.0.0-20260225072514-40873afbc92e // indirect
-	github.com/atharvYadavXperate/newCicd v0.0.0-20260225071512-14cd7771e9d4 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect

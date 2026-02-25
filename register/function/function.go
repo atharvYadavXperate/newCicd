@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	customerror "github.com/atharvYadavXperate/kapad-app/domain/errors"
+	"github.com/atharvYadavXperate/kapad-app/domain/helpers"
 	"github.com/atharvYadavXperate/kapad-app/schema/users"
-	"github.com/atharvYadavXperate/newCicd/kapad-app/domain/helpers"
 	"github.com/atharvYadavXperate/newCicd/register/applayer"
 )
 
@@ -30,7 +30,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	_, err := app.Database.CreateUser(user)
 	if err != nil {
-		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "", err)
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "username already exits", err.Error())
 		return
 	}
 	helpers.ResponseJsonWriter(w, user, http.StatusCreated, "User created successfully", "")
