@@ -2,7 +2,7 @@ module github.com/atharvYadavXperate/newCicd/register
 
 go 1.25.5
 
-require github.com/atharvYadavXperate/kapad-app v0.0.0-20260225073309-792a39079899
+require github.com/atharvYadavXperate/kapad-app v0.0.0-20260225084007-1438b35fb8ef
 
 require (
 	cloud.google.com/go v0.123.0 // indirect

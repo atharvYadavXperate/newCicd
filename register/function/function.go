@@ -1,6 +1,7 @@
 package authfunction
 
 import (
+	"log"
 	"net/http"
 
 	customerror "github.com/atharvYadavXperate/kapad-app/domain/errors"
@@ -18,7 +19,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	var user users.UserSchema
 
 	if err := user.ParseData(r.Body); err != nil {
-		http.Error(w, customerror.ErrParseError.Error(), http.StatusBadRequest)
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, customerror.ErrParseError.Error(), "")
 		return
 	}
 
@@ -28,11 +29,14 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := user.Validate(); err != nil {
+		log.Printf(err.Error())
 		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "failed to create account", err.Error())
+		return
 	}
 
 	_, err := app.Database.CreateUser(user)
 	if err != nil {
+		log.Printf(err.Error())
 		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "username already exits", err.Error())
 		return
 	}
