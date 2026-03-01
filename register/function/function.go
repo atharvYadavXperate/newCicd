@@ -11,21 +11,17 @@ import (
 	"github.com/atharvYadavXperate/newCicd/register/applayer"
 )
 
-var app = applayer.Init() // ✅ initialize once (IMPORTANT)
+var app = applayer.Init()
 
 func Register(w http.ResponseWriter, r *http.Request) {
-
 	if r.Method != http.MethodPost {
-		http.Error(w, customerror.ErrMethodNotAllows.Error(), http.StatusMethodNotAllowed)
+		http.Error(w, customerror.ErrMethodNotAllows.Error(), http.StatusBadRequest)
 		return
 	}
-
-	log.Printf("Request received at %v", time.Now())
-
+	log.Printf("request recived %v", time.Now().String())
+	log.Printf("request Init app %v", time.Now().String())
 	var user users.UserSchema
-	var usersList []users.UserSchema
-	// Send multiple users as response
-	helpers.ResponseJsonWriter(w, usersList, http.StatusCreated, "Users created successfully", "")
+
 	if err := user.ParseData(r.Body); err != nil {
 		helpers.ResponseWriterWithError(w, http.StatusBadRequest, customerror.ErrParseError.Error(), "")
 		return
@@ -37,21 +33,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := user.Validate(); err != nil {
-		log.Println("Validation error:", err)
-		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "Failed to create account", err.Error())
+		log.Printf(err.Error())
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "failed to create account", err.Error())
 		return
 	}
-
-	log.Printf("Storing in database at %v", time.Now())
-
+	log.Printf("before storing in databse %v", time.Now().String())
 	_, err := app.Database.CreateUser(user)
+	log.Printf("Storing in Database Init %v", time.Now().String())
 	if err != nil {
-		log.Println("Database error:", err)
-		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "Username already exists", err.Error())
+		log.Printf(err.Error())
+		helpers.ResponseWriterWithError(w, http.StatusBadRequest, "username already exits", err.Error())
 		return
 	}
-	for i := 0; i < 50; i++ {
-		usersList = append(usersList, user)
-	}
-	helpers.ResponseJsonWriter(w, usersList, http.StatusCreated, "User created successfully", "")
+	log.Printf(time.Now().String())
+	helpers.ResponseJsonWriter(w, user, http.StatusCreated, "User created successfully", "")
 }
