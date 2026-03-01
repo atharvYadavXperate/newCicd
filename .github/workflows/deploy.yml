@@ -256,7 +256,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: login
+        working-directory: demo
 
     env:
       TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}

@@ -53,6 +53,7 @@ resource "google_storage_bucket_object" "source_archive" {
   source = "source.zip"
 }
 
+
 resource "google_cloudfunctions2_function" "demo" {
   name     = "demo"
   location = var.region
