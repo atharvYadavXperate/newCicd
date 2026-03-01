@@ -247,7 +247,7 @@ jobs:
 
   deploy-demo:
     needs: detect-changes
-    if: needs.detect-changes.outputs.login == 'true'
+    if: needs.detect-changes.outputs.demo == 'true'
     runs-on: ubuntu-latest
 
     permissions:
