@@ -3,6 +3,6 @@ package demofunction
 import "net/http"
 
 func Demo(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Shravani Patil"))
+	w.Write([]byte("Shravani Patil mand badak"))
 
 }
